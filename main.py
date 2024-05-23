@@ -41,9 +41,37 @@ class Main:
         process = subprocess.Popen(run_script_path, shell=True, cwd=self.mobsf_path)
         print("MobSF is starting!")
 
-        return process 
+        return process
+
+    '''def get_status(self): #Print the contents of the config.ini
+        print("=========================HERE=========================")      
+        if hasattr(self, 'server_ip'):
+            print("\nMobSF server IP: {}".format(self.server_ip))
+        else:
+            print("\nMobSF server IP is not set.")
+
+        if hasattr(self, 'api_key'):
+            print("MobSF API KEY: {}".format(self.api_key))
+        else:
+            print("MobSF API KEY is not set.")
+
+        if hasattr(self, 'file_path'):
+            if self.file_path:
+                print("Target file path ({}): {}".format(len(self.file_path), ', '.join(self.file_path)))
+            else:
+                print("Target file path is not set.\n")
+        else:
+            print("Target file path is not set.\n")
+        
+        if hasattr(self, 'mobsf_path'):
+            print("MobSF Path: {}\n".format(self.mobsf_path))
+        else:
+            print("MobSF Path: MobSF Path is not set.")
+
+        print("=========================HERE=========================")'''
 
 
 if __name__ == "__main__":
     main = Main()
     main.start_mobsf()
+    main.get_status()
