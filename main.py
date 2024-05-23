@@ -15,7 +15,7 @@ class Main:
         self.mobsf_path = os.path.join(os.path.dirname(__file__), self.config['MobSF']['MobSF'])
         self.server_ip = self.config['SERVER'].get('ServerIP')
         self.api_key = self.config['API'].get('ApiKey')
-        self.file_path = self.config['FILE'].get('FilePath').split(',')
+        self.file_path = self.config['FILE'].get('FilePath')
         # self.avm_name = self.config['AVM'].get('AVM_Name')
         # self.frida_script_path = self.config['Frida'].get('Frida_Script')
         self.encryption_method = self.config['Encryption_method'].get('encryption_method')   
