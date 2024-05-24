@@ -1,8 +1,5 @@
 import json
 import requests
-import pdfkit
-# import weasyprint
-# import platform
 from requests_toolbelt.multipart.encoder import MultipartEncoder
 
 class MobSF_API:
@@ -123,17 +120,16 @@ class MobSF_API:
         if 'hotspot' in score_data:
             print_findings(score_data['hotspot'], "Hotspot")
 
-    def view_source(self):
+    def compare(self):
         headers = {'Authorization': self.api_key}
-        data = {'hash': self.scan_hash}
-        response = requests.post(self.server + '/api/v1/view_source', data=data, headers=headers)
+        data = {'hash1': '1de07a4ceeb1c694c90ad6cad7596248', 'hash2': 'f2be9f83035f19bb37e25d3225e780e3'}
+        response = requests.post(self.server + '/api/v1/compare', data=data, headers=headers)
         print(response.text)
-
 
 def main():
     server_url = 'http://127.0.0.1:8000'  
     api_key = 'b8d75e09550939c951acc7f9545e2260f559eee8c51c9e237c4cce2472d4fb81'  
-    file_path = '..//test1.apk' 
+    file_path = '..//final.apk' 
 
     mobSF = MobSF_API(server_url, api_key, file_path)
 
@@ -144,7 +140,8 @@ def main():
     # mobSF.delete()
     # mobSF.recent_scan()
     # mobSF.score()
-    mobSF.view_source()
+    # mobSF.view_source()
+    mobSF.compare()
 
 if __name__ == "__main__":
     main()
