@@ -25,16 +25,13 @@ class Main:
         if os_name == "Windows":
             setup_script_path = os.path.join(self.mobsf_path, 'setup.bat')
             run_script_path = os.path.join(self.mobsf_path, 'run.bat')
-        elif os_name == "Linux":
-            setup_script_path = os.path.join(self.mobsf_path, 'setup.sh')
-            run_script_path = os.path.join(self.mobsf_path, 'run.sh')
-        elif os_name == "Darwin":
+        elif os_name == "Linux" or os_name == "Darwin":
             setup_script_path = os.path.join(self.mobsf_path, 'setup.sh')
             run_script_path = os.path.join(self.mobsf_path, 'run.sh')
         else:
             print("Unknown operating system.")
             return
-        if not os.path.exists(setup_script_path):
+        if not os.path.exists(setup_script_path) or not os.path.exists(run_script_path):
             print(f"Error: Invalid Path: {self.mobsf_path}")
             return
         
@@ -83,6 +80,40 @@ class Main:
         except requests.ConnectionError:
             print("Failed to connect to the server.")
             return False
+
+    def nested_check(self):
+        print("Checking nested apk...")
+
+        current_dir_path = os.getcwd()
+
+        zip_file_path = self.file_path.split('/')[-1] + ".zip"
+        shutil.copy(selected_file_path, zip_file_path)
+
+        zip_dir_path = current_dir_path + "\\nested_apk\\analysis"
+        if not os.path.exists(zip_dir_path):
+            os.makedirs(zip_dir_path, exist_ok=True)
+        else:
+            print("Directory already exists")
+    
+        with zipfile.ZipFile(zip_file_path, 'r') as unzip:
+            unzip.extractall(zip_dir_path)
+    
+        apk_files = []
+        if os.path.exists(zip_dir_path):
+            for root, dirs, files in os.walk(zip_dir_path):
+                for file in files:
+                    if file.endswith('.apk'):
+                        file_path = os.path.join(root, file)
+                        apk_files.append(file_path)
+        else:
+            print("Directory does not exist")
+        
+        if apk_files:
+            print(len(apk_files), "nested apks were found.")
+            print("---------------------------------------------------------------")
+            return apk_files
+        else:
+            print("nested apk was not found.")
 
 if __name__ == "__main__":
     main = Main()
