@@ -30,16 +30,13 @@ class Main:
         if os_name == "Windows":
             setup_script_path = os.path.join(self.mobsf_path, 'setup.bat')
             run_script_path = os.path.join(self.mobsf_path, 'run.bat')
-        elif os_name == "Linux":
-            setup_script_path = os.path.join(self.mobsf_path, 'setup.sh')
-            run_script_path = os.path.join(self.mobsf_path, 'run.sh')
-        elif os_name == "Darwin":
+        elif os_name == "Linux" or os_name == "Darwin":
             setup_script_path = os.path.join(self.mobsf_path, 'setup.sh')
             run_script_path = os.path.join(self.mobsf_path, 'run.sh')
         else:
             print("Unknown operating system.")
             return
-        if not os.path.exists(setup_script_path):
+        if not os.path.exists(setup_script_path) or not os.path.exists(run_script_path):
             print(f"Error: Invalid Path: {self.mobsf_path}")
             return
         
