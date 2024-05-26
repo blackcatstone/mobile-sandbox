@@ -5,6 +5,7 @@ import requests
 import shutil
 from Crypto.Cipher import AES #pip install pycryptodome
 from Crypto.Util.Padding import unpad
+from api import MobSF_API
 
 class Main:
     def __init__(self):
@@ -252,3 +253,6 @@ if __name__ == "__main__":
     main.remove_dex_files(initial_output_dir)
     repacked_apk = main.repackage_apk(initial_output_dir)
     main.resign_apk(repacked_apk)
+    mobsf_api = MobSF_API(main.server_ip, main.api_key, repacked_apk)
+    mobsf_api.upload()
+    mobsf_api.scan()
