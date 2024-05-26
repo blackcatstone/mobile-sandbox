@@ -203,10 +203,43 @@ class Main:
                     elif os.path.isdir(file_path):
                         shutil.rmtree(file_path)
             print(f"Cleaned up directory: {directory}")
+            return output_apk_path
         except subprocess.CalledProcessError as e:
             print(f"Failed to repackage APK in {directory}: {str(e)}")
 
-    
+    def resign_apk(self, result_apk):
+
+        keystore_file = os.path.splitext(os.path.basename(self.file_path))[0]+".keystore"
+        alias = os.path.splitext(os.path.basename(self.file_path))[0]
+        repackaged_app = result_apk
+        
+        # Create the command string.
+        command = f"keytool -genkey -v -keystore {keystore_file} -alias {alias} -keyalg RSA -keysize 2048"
+
+        # Run the command using subprocess and handle input
+        try:
+            process = subprocess.Popen(command, shell=True, text=True,stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            output, error = process.communicate(input="111111\n111111\n" + " \n" * 6+"yes\n")
+            print(output)
+            if process.returncode == 0:
+                print("Key generation successfully. test sign password : 111111")
+
+        except Exception as e:
+            print(f"Unknown error occurred: {e}")
+
+        # time.sleep(3)
+
+        try:
+            command = f"jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore {keystore_file} {repackaged_app} {alias}"
+            process = subprocess.Popen(command, shell=True, text=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            output, error = process.communicate(input="111111\n")
+            print(output)
+            if process.returncode == 0:
+                print("Signing completed successfully.")
+        except subprocess.CalledProcessError as e:
+            print(f"Error occurred: {e}")
+        except Exception as e:
+            print(f"Unknown error occurred: {e}")    
 
 if __name__ == "__main__":
     main = Main()
@@ -217,4 +250,5 @@ if __name__ == "__main__":
     main.find_and_decompile_nested_apks(initial_output_dir)
     main.decrypt_dex_files(initial_output_dir)
     main.remove_dex_files(initial_output_dir)
-    main.repackage_apk(initial_output_dir)
+    repacked_apk = main.repackage_apk(initial_output_dir)
+    main.resign_apk(repacked_apk)
