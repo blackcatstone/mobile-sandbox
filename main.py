@@ -91,7 +91,7 @@ class Main:
     #################################
 
     def create_path(self):
-        output_folder_name = 'sample3'
+        output_folder_name = 'sample2'
         output_dir_path = os.path.join(os.path.dirname(__file__), output_folder_name)
         os.makedirs(output_dir_path, exist_ok=True)
         return output_dir_path
