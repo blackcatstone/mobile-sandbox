@@ -80,7 +80,7 @@ class MobSF_API:
         headers = {'Authorization' : self.api_key}
         response = requests.get(self.server + '/api/v1/scans', headers=headers)
         scans = response.json()
-        print("\nRecent Scans View:")
+        print("\033[1m\nRecent Scans:\033[0m")
         for scan in scans['content']:
             print(
                 f"\nFile Name: {scan['FILE_NAME']}\n"
@@ -98,14 +98,14 @@ class MobSF_API:
         response = requests.post(self.server + '/api/v1/scorecard', data=data, headers=headers)
         score_data = response.json()
 
-        print(f"Security Score: {score_data['security_score']}")        
+        print(f"\033[1mSecurity Score: {score_data['security_score']}\033[0m")
         print(f"Total Trackers: {score_data['total_trackers']}")
         print(f"Trackers: {score_data['trackers']}")
 
         def print_findings(vulnerabilities, level):
-            print(f"\n[ {level} ]")
+            print(f"\033[1m\n[ {level} ]\033[0m")
             for vulnerability in vulnerabilities:
-                print(f"\n< {vulnerability['title']} >")
+                print(f"\033[1m\n< {vulnerability['title']} >\033[0m")
                 print(f"{vulnerability['description']}")
                 print(f"({vulnerability['section']})\n")
 
@@ -124,7 +124,63 @@ class MobSF_API:
         headers = {'Authorization': self.api_key}
         data = {'hash1': '1de07a4ceeb1c694c90ad6cad7596248', 'hash2': 'f2be9f83035f19bb37e25d3225e780e3'}
         response = requests.post(self.server + '/api/v1/compare', data=data, headers=headers)
-        print(response.text)
+
+        def print_comparison(data):
+            print(f"\033[1mTitle: {data['title']}\033[0m")
+
+            print("\033[1m\nFirst App:\033[0m")
+            app_info(data['first_app'])
+            print("\033[1m\nSecond App:\033[0m")
+            app_info(data['second_app'])
+    
+            print("\033[1m\nDifferences:\033[0m")
+
+            print_only("URLs", data['urls']['only_first'], data['urls']['only_second'])
+            print_only("Android APIs", data['android_api']['only_first'], data['android_api']['only_second'])
+            print_only("Permissions", data['permissions']['only_first'], data['permissions']['only_second'])
+            print_only("Browsable Activities", data['browsable_activities']['only_first'], data['browsable_activities']['only_second'])
+            print_only("APKID", data['apkid']['only_first'], data['apkid']['only_second'])
+
+        def app_info(app_info):
+            print(f"  Name and Version: {app_info['name_ver']}")
+            print(f"  MD5: {app_info['md5']}")
+            print(f"  File Name: {app_info['file_name']}")
+            print(f"  Size: {app_info['size']}")
+            print(f"  Icon Path: {app_info['icon_path']}")
+            print(f"  Activities: {', '.join(app_info['activities'])}")
+            print(f"  Services: {', '.join(app_info['services'])}")
+            print(f"  Providers: {', '.join(app_info['providers'])}")
+            print(f"  Receivers: {', '.join(app_info['receivers'])}")
+
+            print("  Exported Count:")
+            for key, value in app_info['exported_count'].items():
+                print(f"    {key}: {value}")
+
+            print("  APKID Information:")
+            for file, details in app_info['apkid'].items():
+                print(f"    {file}:")
+                for check_type, checks in details.items():
+                    print(f"      {check_type}: {', '.join(checks)}")
+
+            print(f"  Certificate Subject: {app_info['cert_subject']}")
+
+        def print_only(category, only_first, only_second):
+            print(f"\n{category}:")
+            if only_first:
+                print("  Only in First App:")
+                for item in only_first:
+                    print(f"    - {item}")
+            if only_second:
+                print("  Only in Second App:")
+                for item in only_second:
+                    print(f"    - {item}")
+
+        if response.status_code == 200:
+            json_data = response.json()
+            print_comparison(json_data)
+        else:
+            print(f"Error: {response.status_code}")
+            print(response.text)
 
 def main():
     server_url = 'http://127.0.0.1:8000'  
@@ -140,8 +196,7 @@ def main():
     # mobSF.delete()
     # mobSF.recent_scan()
     # mobSF.score()
-    # mobSF.view_source()
-    mobSF.compare()
+    # mobSF.compare()
 
 if __name__ == "__main__":
     main()
