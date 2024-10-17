@@ -10,10 +10,9 @@
 사용기술 : Mobsf, ARM, Emulator, Frida, IDA, Python
 프로젝트 요약 : 경찰청 폴안티스파이 사칭앱
 mobSF 정적 및 동적 분석 및 일원화 API 구현
-Gitgub : mobile-sandbox
-Notion : Team page
-실행영상 : youtube
-분석 보고서 : Googlelink
+Notion : [Team page](https://heavenly-sponge-d64.notion.site/2-d09c0fa1f5a748569f18d202b69aca0e)
+실행영상 : [youtube](https://www.youtube.com/watch?v=sO60AVj6Lf0)
+분석 보고서 : [Googlelink](https://drive.google.com/file/d/1bXyxwwoQCoCwd4Ng8dZrNeca1Rh5G6n5/view)
 
 
 주요 기능 :
