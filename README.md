@@ -1,6 +1,3 @@
-![image](https://github.com/user-attachments/assets/0013b6f4-5706-4cbb-9a55-9c4a3efe0a9d)
-
-
 # mobile-sandbox
 
 목표 : Mobsf를 활용한 스파이앱 분석    
@@ -14,6 +11,7 @@ Notion : [Team page](https://heavenly-sponge-d64.notion.site/2-d09c0fa1f5a748569
 실행영상 : [youtube](https://www.youtube.com/watch?v=sO60AVj6Lf0)  
 분석 보고서 : [Googlelink](https://drive.google.com/file/d/1bXyxwwoQCoCwd4Ng8dZrNeca1Rh5G6n5/view)  
 
+![image](https://github.com/user-attachments/assets/0013b6f4-5706-4cbb-9a55-9c4a3efe0a9d)  
 
 주요 기능 :  
 정적 분석: 안드로이드 APK, iOS IPA, 그리고 Windows 앱의 소스 코드를 분석하여 보안 취약점을 식별  
